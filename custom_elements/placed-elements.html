@@ -1,0 +1,40 @@
+<dom-module id="placed-elements">
+
+    <style>
+        
+        :host{
+            height: 100%;
+            width: 100%;
+        }
+        
+        .background {
+            background: #565456;
+            padding: 8pt;
+        }
+        
+        .full{
+            width: 100%;
+            height:100%;
+        }
+        
+        .title{
+            color: white;
+            font-size: 14pt;
+        }
+        
+    </style>
+   
+    <template style="width:100%; height:100%;">
+        <div class="background full">
+            <p class="roboto title"><b>ELEMENTI INSERITI:</b></p>
+            
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'placed-elements'
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,284 @@
+body {
+    font-family: "Lato", sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+.roboto{
+	font-family: 'Roboto', 'Noto', sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+.ptsans{
+    font-family: 'PT Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.clearfix{
+    clear: both;
+}
+
+#main{
+    width:100%;
+    height: 100%;
+    display: flex;
+}
+
+.flex{
+    flex: 1;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+}
+ 
+::-webkit-scrollbar-track {
+    border-radius: 20px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+}
+
+#container{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 20pt;
+    padding-right: 20pt;
+}
+
+#video_container {
+    width: 100%;
+    margin: auto;
+    position: relative;
+}
+
+#video_container video {
+    position: static;
+
+    -webkit-transition:all .3s ease-in;
+    -moz-transition: all .3s ease-in;
+}
+
+#overlayControls {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top:0;
+    overflow: hidden;
+    background-color: blueviolet;
+}
+
+#overlayControls.fs-control{
+    z-index: 2100;
+}
+
+.hovered{
+    background-color: aqua;
+}
+
+#videoControls {
+    display: none;
+}
+
+.js #videoControls {
+    display: block;
+    background: #272824;
+    background: rgba(39,40,36, .8);
+    border-top: 1px solid white;
+    margin-top: -41px;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    padding: 8px 0;
+    opacity: 0;
+}
+
+/* The logo */
+#video_tutsLogo {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    height: 20px;
+    -webkit-transition: all .4s;
+    -moz-transition: all .4s;
+    transition: all .4s;
+}
+
+/* Mostly for fun. */
+#video_tutsLogo:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+a #video_tutsLogo { border: none; }
+
+
+
+#video_container button {
+    position: relative;
+    float: left;
+    cursor: pointer;
+    border: none;
+    color: white;
+    margin-left: 5px;
+    background: none;
+    border: none;
+    font-family: 'Myriad Pro', 'Myriad', helvetica, arial, sans-serif;
+    height: 20px;
+    padding-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Gets rid of the outline around buttons in Firefox. */
+#video_container input[type="button"]::-moz-focus-inner, button::-moz-focus-inner, button::-webkit-focus-inner { padding:0;border:0 none; }
+
+/* The play, pause buttons. Have to style differently because of their inherant sizes. Sucks a bit. */
+#play { text-shadow: 0 1px 0 black; position: relative; top: -1px;}
+#pauseButton { position: relative; left: -3px; top: -3px; font-size: 13px;}
+
+#video_container button:hover {
+    color: #c65819;
+    text-shadow: 0 1px 0 #ab3800;
+}
+
+/* When in full screen mode */
+#fullScreen { padding-right: 15px;}
+#video_container .fs-control { position: fixed; bottom: 0; left: 0; z-index: 2200; }
+
+/* PROGRESS BAR */
+#progress {
+    cursor: pointer;
+}
+
+#progress #progress_box {
+    float: left;
+    width: 80%;
+    height: 10px;
+
+    border: 1px solid #292929;
+    -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;
+
+    background: -webkit-gradient(linear, 0 0, 100% 0, from(#c65819), color-stop(.7, #c65819), to(#ab3800));
+    background: -moz-linear-gradient(left, #c65819, #c65819 70%, #ab3800);
+
+    -webkit-box-shadow: 0 1px 0 #292929, 0 -1px 0 #292929;
+    -moz-box-shadow: 0 1px 0 #292929, 0 -1px 0 #292929;
+    box-shadow: 0 1px 0 #292929, 0 -1px 0 #292929;
+
+    margin: 2px 0 0 5px;
+    padding: 2px;
+
+    overflow:hidden;
+
+}
+
+#progress #play_progress {
+    display: block;
+    width: 0px;
+    height: 10px;
+    margin-top: -2pt;
+    margin-left: -2pt;
+
+    background-color: #fff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), color-stop(.5, white), to(#e3e3e3));
+    background: -moz-linear-gradient(top, #e3e3e3, white 50%, #e3e3e3);
+
+    -webkit-border-radius:5px; -moz-border-radius: 5px; border-radius: 5px;
+}
+
+
+#progress #play_time {
+    float: left;
+    margin: 7px 0 0 5px;
+    font-size: 10px;
+    font-weight: normal;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 1;
+}
+
+
+#video_container .fullsizeVideo {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.white{
+    background-color: white;
+    color: e8e8e8;
+}
+
+.link{
+    background-color: transparent;
+    color: white;
+}
+
+.dragging{
+    z-index: 3000;
+}
+
+.bar{
+    width: 40pt;
+    height: 100%
+}
+
+.left{
+    float: left;
+    height:100%;
+}
+
+.placed{
+    width: 150pt;
+}
+
+.property{
+    width: 150pt;
+}
+
+.gradient {
+    background: #e8745c;
+    background: -webkit-linear-gradient(#e8745c 0%, #eb4195 100%);
+    background: -o-linear-gradient(#e8745c 0%, #eb4195 100%);
+    background: linear-gradient(#e8745c 0%, #eb4195 100%);  
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8745c', endColorstr='#eb4195',GradientType=0 );
+}
+
+.center{
+    display: flex;
+    align-items: center;
+}
+
+.full{
+    width: 100%;
+    height:100%;
+}
+
+iron-icon{
+    color:white;
+}
+
+tr{
+    margin: 8pt;
+    text-align: center;
+}
+
+table{
+    border-collapse: separate;
+}
+
+.background {
+    background: #565456;
+    padding: 8pt;
+}
+
+.title{
+    color: white;
+    font-size: 14pt;
+}

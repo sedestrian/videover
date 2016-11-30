@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en" style="width:100%; height:100%;">
+<head>
+    <meta charset="utf-8">
+    <title>Video Editor</title>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="css/videoPlayer.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/jquery/dist/jquery-ui.min.css">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <link rel="import" href="bower_components/font-roboto/roboto.html">
+    <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+    <link rel="import" href="custom_elements/elements-bar.html">
+    <link rel="import" href="custom_elements/placed-elements.html">
+    <link rel="import" href="custom_elements/property-editor.html">
+    
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+</head>
+<body>
+
+<div id="main">
+   
+    <elements-bar></elements-bar>
+   
+    <placed-elements></placed-elements>
+   
+    <div id="container" class="flex">
+        <div id="video_container">
+            <video id="player" controls width="100%" preload poster="assets/poster.jpg">
+                <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4" type="video/mp4"/>
+                <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.ogg" type="video/ogg"/>
+
+                 FLASH FALLBACK 
+                <object width="100%" height="776"><param name="movie" value="http://www.youtube.com/v/2AzuX9Lrjv4&amp;hl=en_US&amp;fs=1?color1=0x3a3a3a&amp;color2=0x999999&amp;hd=1"/><param name="allowFullScreen" value="true"/><param name="allowscriptaccess" value="always"/><embed src="http://www.youtube.com/v/2AzuX9Lrjv4&amp;hl=en_US&amp;fs=1?color1=0x3a3a3a&amp;color2=0x999999&amp;hd=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="false" width="1000" height="776"/></object>
+            </video>
+
+            <div id="overlayControls" class="overlay">
+
+            </div>
+
+            <div id="videoControls">
+                <button id="play" title="Play"> &#x25BA; </button>
+
+                <div id="progress">
+                    <div id="progress_box">
+                        <span id="play_progress"></span>
+                    </div>
+                </div>
+
+                <button id="fullScreen" title="FullScreen Toggle">  FS </button>
+                <a href="http://www.tutsplus.com"><img src="img/tuts_logo.png" alt="Tuts" id="video_tutsLogo" /></a>
+            </div>
+        </div>
+    </div>
+    
+    <property-editor></property-editor>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+<script src="bower_components/jquery/dist/jquery-ui.min.js"></script>
+<script src="js/videoPlayer.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
