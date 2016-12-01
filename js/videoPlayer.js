@@ -1,3 +1,6 @@
+var overlayWidth = $('.overlay').width();
+var overlayHeight = $('.overlay').height();
+
 (function (window, document, array) {
 
     var video = document.getElementsByTagName('video')[0],
@@ -362,29 +365,99 @@ $(document).ready(function(){
         stack: '.draggable',
         revert: true,
         cursor: 'move',
-        helper: help
+        helper: function(event, ui){
+            var element = event.target;
+            if($(element).attr('icon') == 'code'){
+                return '<paper-button raised class="dragging white">BUTTON</paper-button>';
+            }else if($(element).attr('icon') == 'link'){
+                return '<paper-button class="dragging link">LINK</paper-button>';
+            }else{
+                return '<span style="color:white;" class="dragging">PLACEHOLDER</span>';
+            }
+        }
     });
     
     $('.overlay').droppable({
-        accept: '.dragging',
+        accept: '.draggable',
         drop: handleDrop,
-        hoverClass: 'hovered'
+    });
+    
+    $(window).resize(function(event){
+        var hVariation = Math.abs(( $('.overlay').width() / window.overlayWidth ));
+        var vVariation = Math.abs(( $('.overlay').height() / window.overlayheight ));
+        console.log(hVariation);
+        $('.overlay').children().each(function(){
+            var newLeft = ( parseFloat($(this).css('left')) / Number(window.overlayWidth) ) * Number($('.overlay').width());
+            var newTop = ( parseFloat($(this).css('top')) / Number(window.overlayHeight) ) * Number($('.overlay').height());
+            $(this).css('left', newLeft);
+            $(this).css('top', newTop);
+            $(this).animate({transform: 'scale('+hVariation+','+vVariation+')'});
+        });
+        window.overlayWidth = $('.overlay').width();
+        window.overlayHeight = $('.overlay').height();
     });
 });
 
-function help(event, ui){
-    var element = event.target;
-    if($(ui.draggable).attr('icon') == 'code'){
-        return '<paper-button raised class="dragging white">BUTTON</paper-button>';
-    }else if($(ui.draggable).attr('icon') == 'link'){
-        return '<paper-button class="dragging link">LINK</paper-button>';
-    }
-}
-
 function handleDrop(event, ui){
-    console.log("dropped");
-    ui.draggable.position( { of: $(this), my: 'left top', at: 'left top' } );
+    var helper = $(ui.helper).clone().removeClass('ui-draggable-dragging');
+    var pj = 0;
+    var type = $('<div/>').append($(helper).clone()).html();
+    var props = "";
+    
+    var eui = ui;
+    
+    var width = Math.floor($('.overlay').width() / 2);
+    var height = Math.floor($('.overlay').height() / 2);
     ui.draggable.draggable( 'option', 'revert', false );
+    
+    $.ajax({
+        url: "php/save-overlay.php",
+        method: "POST",
+        data: {'project': pj, 'type': type, 'props': props},
+        success: function(data){
+            var id = Number(data);
+            var newleft = eui.position.left - $('.overlay').offset().left;
+            var newtop = eui.position.top - $('.overlay').offset().top;
+            $(helper).css("position", "absolute");
+            $(helper).css("left", newleft);
+            $(helper).css("top", newtop);
+            $(helper).data("id", id);
+            $(helper).draggable({
+                containment: "parent",
+                start: function(event, ui) {
+                    $(this).draggable("option", "cursorAt", {
+                        left: 0,
+                        top: 0
+                    }); 
+                },
+                stop: function(event, ui){
+
+                    //TODO: capire come recuperare il valore di to;
+                    //TODO: passare il valore del nuovo overlay al timestamp;
+
+                    var mui = ui;
+
+                    var to = $('#player').prop('currentTime') + 10;
+
+                    console.log(mui.position.left);
+                    console.log(mui.position.top);
+                    console.log($('#player').prop('currentTime'));
+                    console.log(to);
+                    console.log($(helper).data("id"));
+
+                    $.ajax({
+                        url: "php/save-timestamp.php",
+                        method: "POST",
+                        data: {'left': mui.position.left, 'top': mui.position.top, 'timefrom': Number($('#player').prop('currentTime')), 'timeto': Number(to), 'visible': 0, 'overlay': $(helper).data("id")},
+                        success: function(data){
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+            $('.overlay').append(helper);
+        }
+    });
 }
 
 /*$('.overlay').bind('drop', function(e) {
