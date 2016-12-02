@@ -1,5 +1,7 @@
 var overlayWidth = $('.overlay').width();
 var overlayHeight = $('.overlay').height();
+var percentH = 1;
+var percentV = 1;
 
 (function (window, document, array) {
 
@@ -384,19 +386,28 @@ $(document).ready(function(){
     
     $(window).resize(function(event){
         var hVariation = Math.abs(( $('.overlay').width() / window.overlayWidth ));
-        var vVariation = Math.abs(( $('.overlay').height() / window.overlayheight ));
-        console.log(hVariation);
+        var vVariation = Math.abs(( $('.overlay').height() / window.overlayHeight ));
+        var nPercentH = window.percentH - Math.abs(1 - hVariation);
+        var nPercentV = window.percentV - Math.abs(1 - vVariation);
+        console.log(nPercentH);
+        console.log(nPercentV);
         $('.overlay').children().each(function(){
             var newLeft = ( parseFloat($(this).css('left')) / Number(window.overlayWidth) ) * Number($('.overlay').width());
             var newTop = ( parseFloat($(this).css('top')) / Number(window.overlayHeight) ) * Number($('.overlay').height());
             $(this).css('left', newLeft);
             $(this).css('top', newTop);
-            $(this).animate({transform: 'scale('+hVariation+','+vVariation+')'});
+            $(this).animate({transform: 'scale('+nPercentH+','+nPercentV+')'});
         });
         window.overlayWidth = $('.overlay').width();
         window.overlayHeight = $('.overlay').height();
+        window.percentH = nPercentH;
+        window.percentV = nPercentV;
     });
 });
+
+function fuck(){
+    console.log("fuck");
+}
 
 function handleDrop(event, ui){
     var helper = $(ui.helper).clone().removeClass('ui-draggable-dragging');

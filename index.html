@@ -8,61 +8,224 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
     <link rel="stylesheet" href="css/videoPlayer.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="bower_components/jquery/dist/jquery-ui.min.css">
+    <link rel="stylesheet" href="bower_components/jquery/dist/jquery-ui.css">
     <link rel="import" href="bower_components/paper-button/paper-button.html">
+    <link rel="import" href="bower_components/paper-icon-button/my-button.html">
+    <link rel="import" href="bower_components/paper-card/paper-card.html">
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
     <link rel="import" href="bower_components/font-roboto/roboto.html">
     <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
-    <link rel="import" href="custom_elements/elements-bar.html">
-    <link rel="import" href="custom_elements/placed-elements.html">
-    <link rel="import" href="custom_elements/property-editor.html">
+    <link rel="import" href="bower_components/iron-icon/iron-icon.html">
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/iron-icons/editor-icons.html">
+    <link rel="import" href="bower_components/paper-color-picker/paper-color-picker.html">
+    <link rel="import" href="bower_components/paper-color-picker/paper-color-input.html">
+    <link rel="import" href="bower_components/paper-color-picker/paper-color-circle.html">
     
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
 </head>
 <body>
 
-<div id="main">
-   
-    <elements-bar></elements-bar>
-   
-    <placed-elements></placed-elements>
-   
-    <div id="container" class="flex">
-        <div id="video_container">
-            <video id="player" controls width="100%" preload poster="assets/poster.jpg">
-                <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4" type="video/mp4"/>
-                <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.ogg" type="video/ogg"/>
+<style is="custom-style">
+    .big {
+        --iron-icon-height: 40px;
+        --iron-icon-width: 40px;
+    } 
+    
+    .left{
+        float: left;
+        height: 100%;
+        margin-left: 4pt;
+    }
 
-                 FLASH FALLBACK 
-                <object width="100%" height="776"><param name="movie" value="http://www.youtube.com/v/2AzuX9Lrjv4&amp;hl=en_US&amp;fs=1?color1=0x3a3a3a&amp;color2=0x999999&amp;hd=1"/><param name="allowFullScreen" value="true"/><param name="allowscriptaccess" value="always"/><embed src="http://www.youtube.com/v/2AzuX9Lrjv4&amp;hl=en_US&amp;fs=1?color1=0x3a3a3a&amp;color2=0x999999&amp;hd=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="false" width="1000" height="776"/></object>
-            </video>
+    .right{
+        float: right;
+        height: 100%;
+        margin-right: 4pt;
+    }
 
-            <div id="overlayControls" class="overlay">
+    .red{
+        color: #F44336;
+    }
 
+    .grey{
+        color: #9E9E9E;
+    }
+    
+    paper-input.prop{
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: #e8745c;
+        --paper-input-container-input-color: white;
+    }
+    
+    paper-color-input.prop{
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: #e8745c;
+        --paper-input-container-input-color: white;
+    }
+    
+</style>
+
+    <div id="main">
+        <div class="bar">
+            <div class="gradient full center">
+                <table class="full" cellspacing="90">
+                    <tr>
+                        <td><iron-icon class="big draggable" icon="check-box-outline-blank"></iron-icon></td>
+                    </tr>
+                    <tr>
+                        <td><iron-icon class="big draggable" icon="aspect-ratio"></iron-icon></td>
+                    </tr>
+                    <tr>
+                        <td><iron-icon class="big draggable" icon="editor:title"></iron-icon></td>
+                    </tr>
+                    <tr>
+                        <td><iron-icon class="big draggable" icon="link"></iron-icon></td>
+                    </tr>
+                    <tr>
+                        <td><iron-icon class="big draggable" icon="code"></iron-icon></td>
+                    </tr>
+                    <tr>
+                        <td><iron-icon class="big draggable" icon="editor:insert-photo"></iron-icon></td>
+                    </tr>
+                </table>
             </div>
+        </div>
 
-            <div id="videoControls">
-                <button id="play" title="Play"> &#x25BA; </button>
+        <div class="placed">
+            <div class="background full">
+                <p class="roboto title"><b>ELEMENTI INSERITI:</b></p>
+                <div class="altfull" style="overflow:auto;">
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                    <paper-card class="card">
+                        <div class="flex-center card-top">
+                            <paper-button raised>BUTTON</paper-button>
+                        </div>
+                        <div class="card-controls">
+                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
+                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
+                        </div>
+                    </paper-card>
+                </div>
+            </div>
+        </div>
 
-                <div id="progress">
-                    <div id="progress_box">
-                        <span id="play_progress"></span>
-                    </div>
+        <div id="container" class="flex">
+            <div id="video_container">
+                <video id="player" controls width="100%" preload poster="assets/poster.jpg">
+                    <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4" type="video/mp4"/>
+                    <source src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.ogg" type="video/ogg"/>
+
+                     FLASH FALLBACK 
+                    <object width="100%" height="776"><param name="movie" value="http://www.youtube.com/v/2AzuX9Lrjv4&amp;hl=en_US&amp;fs=1?color1=0x3a3a3a&amp;color2=0x999999&amp;hd=1"/><param name="allowFullScreen" value="true"/><param name="allowscriptaccess" value="always"/><embed src="http://www.youtube.com/v/2AzuX9Lrjv4&amp;hl=en_US&amp;fs=1?color1=0x3a3a3a&amp;color2=0x999999&amp;hd=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="false" width="1000" height="776"/></object>
+                </video>
+
+                <div id="overlayControls" class="overlay">
+
                 </div>
 
-                <button id="fullScreen" title="FullScreen Toggle">  FS </button>
-                <a href="http://www.tutsplus.com"><img src="img/tuts_logo.png" alt="Tuts" id="video_tutsLogo" /></a>
+                <div id="videoControls">
+                    <button id="play" title="Play"> &#x25BA; </button>
+
+                    <div id="progress">
+                        <div id="progress_box">
+                            <span id="play_progress"></span>
+                        </div>
+                    </div>
+
+                    <button id="fullScreen" title="FullScreen Toggle">  FS </button>
+                    <a href="http://www.tutsplus.com"><img src="img/tuts_logo.png" alt="Tuts" id="video_tutsLogo" /></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="property">
+            <div class="background full">
+                <p class="roboto title"><b>PROPRIETA':</b></p>
+                <div class="altfull" style="overflow:auto;">
+                    <span class="roboto propsec">Generale:</span>
+                    <paper-input class="prop" label="Nome"></paper-input>
+                    <paper-input class="prop" label="Testo"></paper-input>
+                    <span class="roboto propsec">Testo:</span>
+                    <paper-input class="prop" label="Dimensione font"></paper-input>
+                    <paper-color-input class="prop" shape="square" type="hsl" label="Colore font"></paper-color-input>
+                    <paper-input class="prop" label="Famiglia font"></paper-input>
+                    <span class="roboto propsec">Elemento:</span>
+                    <paper-input class="prop" label="Sfondo"></paper-input>
+                    <paper-input class="prop" label="Colore sfondo"></paper-input>
+                </div>
             </div>
         </div>
     </div>
-    
-    <property-editor></property-editor>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
-<script src="bower_components/jquery/dist/jquery-ui.min.js"></script>
+<script src="bower_components/jquery/dist/jquery-ui.js"></script>
 <script src="js/videoPlayer.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/jquery_transform_js/jquery.transform2d.js"></script>
 
 
 </body>
