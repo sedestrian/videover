@@ -1,0 +1,38 @@
+{
+  "name": "paper-input-file",
+  "version": "1.0.3",
+  "authors": [
+    "Anonymous <anonymous@example.com>"
+  ],
+  "description": "An element providing a solution to no problem in particular.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
+  "main": "paper-input-file.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "iron-input-file": "https://github.com/Zecat/iron-input-file.git#master",
+    "paper-tile": "https://github.com/Zecat/paper-tile.git",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.5",
+    "iron-icons": "PolymerElements/iron-icons#~1.0.4",
+    "paper-button": "PolymerElements/paper-button#~1.0.8",
+    "iron-form-element-behavior": "PolymerElements/iron-form-element-behavior#~1.0.5",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#~1.2.0",
+    "paper-item": "PolymerElements/paper-item#~1.1.1",
+    "paper-styles": "PolymerElements/paper-styles#~1.0.12",
+    "neon-animation": "PolymerElements/neon-animation#~1.0.8",
+    "neon-advanced-animations": "https://github.com/Zecat/neon-advanced-animations.git#master"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  }
+}

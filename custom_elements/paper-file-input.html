@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button-light.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<dom-module id="paper-file-input">
+   
+    <style>
+        
+        
+        
+    </style>
+   
+    <template>
+        
+        <paper-input label="{{label}} ">
+            <paper-icon-button suffix id="fileFab" on-tap="_pickFile" icon="more-vert"></paper-icon-button>
+        </paper-input>
+        <input id="filePicker" type="file" accept="image/*" hidden multiple/>
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'paper-file-input',
+            
+            properties:{
+                label:{
+                    type:String
+                }
+            },
+            
+            changed: function(){
+                $(this.$.fileFab).attr("icon", "icons:check");
+            },
+            
+            _pickFile: function(e) {
+                e.preventDefault();
+                this.$.fileFab.blur();
+
+                // cancelable is true, not work on ios simulator
+                // this.$.filePicker.click();
+
+                // default cancelable is false, work on ios simulator
+                var evt = new MouseEvent("click");
+                this.$.filePicker.dispatchEvent(evt);
+            },
+            
+            uploadfiles: function(file, succ){
+                var myFormData = new FormData();
+                var ins = this.$.filePicker.files.length;
+                for (var x = 0; x < ins; x++) {
+                    myFormData.append("fileToUpload[]", this.$.filePicker.files[x]);
+                }
+                $.ajax({
+                    url: file,
+                    type: 'POST',
+                    processData: false, // important
+                    contentType: false,
+                    data: myFormData,
+                }).done(function(response){
+                    console.log(response);
+                    succ(response);
+                });
+            }
+        });
+    </script>
+
+</dom-module>

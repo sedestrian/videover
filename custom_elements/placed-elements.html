@@ -1,3 +1,16 @@
+<link rel="import" href="element-holder.html">
+<link rel="import" href="../bower_components/juicy-html/juicy-html.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button-light.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+
 <dom-module id="placed-elements">
 
     <style>
@@ -27,13 +40,41 @@
     <template style="width:100%; height:100%;">
         <div class="background full">
             <p class="roboto title"><b>ELEMENTI INSERITI:</b></p>
-            
+            <div class="altfull">
+                <template is="dom-repeat" items="{{overlays}}">
+                    <element-holder element="{{item.tid}}" html="{{item.type}}" name="{{item.name}}" from="{{item.from}}" to="{{item.to}}"></element-holder>
+                </template>
+            </div>
         </div>
     </template>
 
     <script>
         Polymer({
-            is: 'placed-elements'
+            is: 'placed-elements',
+            
+            ready: function(){
+                var app = this;
+                this._retrieveData();
+                $(document).on('element-changed', function(){
+                    console.log("here");
+                    app._retrieveData();
+                });
+            },
+            
+            _retrieveData: function(){
+                var project = 1;
+                var app = this;
+                $.ajax({
+                    url:'php/get-elements.php',
+                    method: 'POST',
+                    data: {'project':project},
+                    success: function(data){
+                        var result = JSON.parse(data);
+                        console.log(result);
+                        app.overlays = result;
+                    }
+                });
+            }
         });
     </script>
 

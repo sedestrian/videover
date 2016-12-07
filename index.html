@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/jquery/dist/jquery-ui.css">
     <link rel="import" href="bower_components/paper-button/paper-button.html">
-    <link rel="import" href="bower_components/paper-icon-button/my-button.html">
+    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button-light.html">
     <link rel="import" href="bower_components/paper-card/paper-card.html">
     <link rel="import" href="bower_components/paper-input/paper-input.html">
     <link rel="import" href="bower_components/font-roboto/roboto.html">
@@ -18,9 +18,13 @@
     <link rel="import" href="bower_components/iron-icon/iron-icon.html">
     <link rel="import" href="bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="bower_components/iron-icons/editor-icons.html">
+    <link rel="import" href="bower_components/iron-icons/av-icons.html">
     <link rel="import" href="bower_components/paper-color-picker/paper-color-picker.html">
     <link rel="import" href="bower_components/paper-color-picker/paper-color-input.html">
     <link rel="import" href="bower_components/paper-color-picker/paper-color-circle.html">
+    <link rel="import" href="custom_elements/placed-elements.html">
+    <link rel="import" href="custom_elements/property-editor.html">
+    <link rel="import" href="custom_elements/paper-file-input.html">
     
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
@@ -33,36 +37,23 @@
         --iron-icon-width: 40px;
     } 
     
-    .left{
-        float: left;
-        height: 100%;
-        margin-left: 4pt;
-    }
-
-    .right{
-        float: right;
-        height: 100%;
-        margin-right: 4pt;
-    }
-
-    .red{
-        color: #F44336;
-    }
-
-    .grey{
-        color: #9E9E9E;
+    iron-icon.play{
+            --iron-icon-height: 40px;
+            --iron-icon-width: 40px;
+            color: #e8745c;
     }
     
-    paper-input.prop{
-        --paper-input-container-color: white;
-        --paper-input-container-focus-color: #e8745c;
-        --paper-input-container-input-color: white;
+    button.play{
+        width: 40px;
+        height: 40px;
     }
     
-    paper-color-input.prop{
-        --paper-input-container-color: white;
-        --paper-input-container-focus-color: #e8745c;
-        --paper-input-container-input-color: white;
+    paper-slider#play_progress{
+        --paper-slider-active-color:#e8745c;
+        --paper-slider-secondary-color:#e8745c;
+        --paper-slider-knob-color:#e8745c;
+        --paper-slider-pin-color:#e8745c;
+        width: 100%;
     }
     
 </style>
@@ -94,83 +85,7 @@
         </div>
 
         <div class="placed">
-            <div class="background full">
-                <p class="roboto title"><b>ELEMENTI INSERITI:</b></p>
-                <div class="altfull" style="overflow:auto;">
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                    <paper-card class="card">
-                        <div class="flex-center card-top">
-                            <paper-button raised>BUTTON</paper-button>
-                        </div>
-                        <div class="card-controls">
-                            <iron-icon icon="delete" class="left red" onclick="fuck()"></iron-icon>
-                            <iron-icon icon="create" class="right grey" onclick="fuck()"></iron-icon>
-                        </div>
-                    </paper-card>
-                </div>
-            </div>
+            <placed-elements></placed-elements>
         </div>
 
         <div id="container" class="flex">
@@ -187,8 +102,8 @@
 
                 </div>
 
-                <div id="videoControls">
-                    <button id="play" title="Play"> &#x25BA; </button>
+                <!--<div id="videoControls">
+                    <button title="Play" id="play"> &#x25BA; </button>
 
                     <div id="progress">
                         <div id="progress_box">
@@ -198,30 +113,24 @@
 
                     <button id="fullScreen" title="FullScreen Toggle">  FS </button>
                     <a href="http://www.tutsplus.com"><img src="img/tuts_logo.png" alt="Tuts" id="video_tutsLogo" /></a>
-                </div>
+                </div>-->
             </div>
+            
+            <div id="controls">
+                
+                <button is="paper-icon-button-light" class="play"><iron-icon id="play" class="play" icon="av:play-arrow"></iron-icon></button>
+                <paper-slider id="play_progress" min="0" max="100" pin></paper-slider>
+                
+            </div>
+            
         </div>
 
         <div class="property">
-            <div class="background full">
-                <p class="roboto title"><b>PROPRIETA':</b></p>
-                <div class="altfull" style="overflow:auto;">
-                    <span class="roboto propsec">Generale:</span>
-                    <paper-input class="prop" label="Nome"></paper-input>
-                    <paper-input class="prop" label="Testo"></paper-input>
-                    <span class="roboto propsec">Testo:</span>
-                    <paper-input class="prop" label="Dimensione font"></paper-input>
-                    <paper-color-input class="prop" shape="square" type="hsl" label="Colore font"></paper-color-input>
-                    <paper-input class="prop" label="Famiglia font"></paper-input>
-                    <span class="roboto propsec">Elemento:</span>
-                    <paper-input class="prop" label="Sfondo"></paper-input>
-                    <paper-input class="prop" label="Colore sfondo"></paper-input>
-                </div>
-            </div>
+            <property-editor></property-editor>
         </div>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
 <script src="bower_components/jquery/dist/jquery-ui.js"></script>
 <script src="js/videoPlayer.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

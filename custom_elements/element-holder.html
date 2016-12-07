@@ -1,0 +1,156 @@
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button-light.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<dom-module id="element-holder">
+   
+    <style>
+        
+        .left{
+            float: left;
+            height: 100%;
+            margin-left: 4pt;
+        }
+
+        .right{
+            float: right;
+            height: 100%;
+            margin-right: 4pt;
+        }
+
+        .red{
+            color: #F44336;
+        }
+
+        .grey{
+            color: #9E9E9E;
+        }
+        
+        .card-top {
+            height: -webkit-calc(100% - 45pt);
+            height: -moz-calc(100% - 45pt);
+            height: calc(100% - 45pt);
+        }
+
+        .card-controls{
+            width:100%;
+            height:25pt;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+        }
+        
+        .time{
+            display: -webkit-flex;
+            display: flex;
+            flex:1;
+            height:100%;
+            width: 100%;
+            padding-left: 4pt;
+            padding-right: 4pt;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .el-name{
+            width: 100%;
+            height: 20pt;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .elem-name-text{
+            padding-left: 8pt;
+            padding-top: 8pt;
+            font-size: 12pt;
+        }
+        
+        .smalltext{
+            font-size: 9pt;
+        }
+        
+    </style>
+   
+    <template>
+        
+        <paper-card class="card" on-tap="select">
+            <div class="el-name"><span class="elem-name-text roboto">{{name}}</span></div>
+            <div id="cont" class="flex-center card-top">
+                <content></content>
+            </div>
+            <div class="card-controls">
+                <iron-icon icon="delete" class="left red" on-tap="delete"></iron-icon>
+                <div class="time"><span class="smalltext roboto">{{_setup(from, to)}}</span></div>
+                <iron-icon icon="create" class="right grey" on-tap="edit"></iron-icon>
+            </div>
+        </paper-card>
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'element-holder',
+            
+            properties:{
+                element: Number,
+                html:{
+                    type:String,
+                    observer: '_htmlChanged'
+                },
+                name:{
+                    type:String
+                },
+                from:{
+                    type:String
+                },
+                to:{
+                    type:String
+                }
+            },
+            
+            select: function(e){
+                this.fire('element-selected', {selected: this.element});
+            },      
+            
+            _htmlChanged: function(){
+                this.$.cont.innerHTML = this.html;
+            },
+            
+            ready: function(){
+                this.$.cont.innerHTML = this.html;
+            },
+            
+            delete: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+            },
+            
+            _setup: function(from, to){
+                var fhours = Math.floor(Number(from) / 3600);
+                var thours = Math.floor(Number(to) / 3600);
+                var fminutes = Math.floor((Number(from) - (fhours * 3600)) / 60);
+                var tminutes = Math.floor((Number(to) - (thours * 3600)) / 60);
+                var fseconds = Math.floor(((Number(from) - (fhours * 3600)) - fminutes * 60));
+                var tseconds = Math.floor(((Number(to) - (thours * 3600)) - tminutes * 60));
+                var nfrom, nto;
+                if(fhours != 0){
+                    nfrom = ('0' + fhours).slice(-2) + ":" + ('0' + fminutes).slice(-2) + ":" + ('0' + fseconds).slice(-2);
+                }else{
+                    nfrom = ('0' + fminutes).slice(-2) + ":" + ('0' + fseconds).slice(-2);
+                }
+                if(thours != 0){
+                    nto = ('0' + thours).slice(-2) + ":" + ('0' + tminutes).slice(-2) + ":" + ('0' + tseconds).slice(-2);
+                }else{
+                    nto = ('0' + tminutes).slice(-2) + ":" + ('0' + tseconds).slice(-2);
+                }
+                return nfrom+" - "+nto;
+            }
+        });
+    </script>
+
+</dom-module>

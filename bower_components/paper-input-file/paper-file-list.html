@@ -1,0 +1,37 @@
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="paper-file-item.html">
+
+<dom-module id="paper-file-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: var(--paper-file-list-width, 300px);
+      }
+    </style>
+    <div class="layout vertical">
+      <template is="dom-repeat" items="[[files]]" id="domRepeat">
+        <paper-file-item 
+          name="[[item.name]]" 
+          size="[[item.size]]"
+          on-neon-animation-finish="removeFile">
+        </paper-file-item>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'paper-file-list',
+      properties: {
+        files: {
+          type: Array,
+          value: function() { return []; }
+        }
+      },
+      removeFile: function(e) {
+        this.splice('files', e.model.__data__.index, 1);
+      }
+    });
+  </script>
+</dom-module>

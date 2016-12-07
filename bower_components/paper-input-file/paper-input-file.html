@@ -1,0 +1,88 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-input-file/iron-input-file.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="paper-file-list.html">
+
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <paper-input-file></paper-input-file>
+
+@group Seed Elements
+@element paper-input-file
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="paper-input-file">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+    </style>
+    <input id="inputFile" is="iron-input-file" multiple bind-files="{{files}}">
+    <paper-button on-tap="add">[[addText]]</paper-button>
+    <paper-button on-tap="change">[[replaceText]]</paper-button>
+    <paper-file-list files="{{files}}"></paper-file-list>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'paper-input-file',
+
+    properties: {
+      addText: {
+        type: String,
+        value: 'ADD'
+      },
+      replaceText: {
+        type: String,
+        value: 'REPLACE'
+      },
+      files: Array,
+      value: {
+        observer: '_computeValue(files)'
+      }
+    },
+
+    behaviors: [
+      Polymer.IronFormElementBehavior
+    ],
+
+    add: function() {
+      this.$.inputFile.add();
+    },
+
+    change: function() {
+      this.$.inputFile.change();
+    },
+
+    _computeValue: function(files) {
+      return files;
+    }
+
+  });
+
+</script>

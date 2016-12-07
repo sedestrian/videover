@@ -6,7 +6,7 @@ var percentV = 1;
 (function (window, document, array) {
 
     var video = document.getElementsByTagName('video')[0],
-        videoControls = document.getElementById('videoControls'),
+//        videoControls = document.getElementById('videoControls'),
         overlayControls = document.getElementById('overlayControls'),
         play = document.getElementById('play'),
 
@@ -61,15 +61,15 @@ var percentV = 1;
             this.handleButtonPresses();
 
             // When the full screen button is pressed...
-            fullScreenToggleButton.addEventListener("click", function () {
-                isVideoFullScreen ? that.fullScreenOff() : that.fullScreenOn();
-            }, true);
+//            fullScreenToggleButton.addEventListener("click", function () {
+//                isVideoFullScreen ? that.fullScreenOff() : that.fullScreenOn();
+//            }, true);
 
-            this.videoScrubbing();
+//            this.videoScrubbing();
         },
 
 
-        initializeControls: function () {
+        /*initializeControls: function () {
             // When all meta information has loaded, show controls
             // and set the progress bar.
             videoPlayer.showHideControls();
@@ -93,7 +93,7 @@ var percentV = 1;
             videoControls.addEventListener('mouseout', function () {
                 videoControls.style.opacity = 0;
             }, false);
-        },
+        },*/
 
 
         fullScreenOn: function () {
@@ -104,8 +104,8 @@ var percentV = 1;
 
             // Apply a classname to the video and controls, if the designer needs it...
             video.className = 'fullsizeVideo';
-            videoControls.className = 'fs-control';
-            fullScreenToggleButton.className = "fs-active control";
+//            videoControls.className = 'fs-control';
+            fullScreenToggleButton.className = "play fs-active control";
             overlayControls.className = 'fs-control';
 
             // Listen for escape key. If pressed, close fullscreen.
@@ -119,22 +119,22 @@ var percentV = 1;
             video.style.position = 'static';
             video.className = '';
             video.style.cssText = '';
-            fullScreenToggleButton.className = "control";
-            videoControls.className = '';
+            fullScreenToggleButton.className = "play control";
+//            videoControls.className = '';
             overlayControls.className = '';
         },
 
 
         handleButtonPresses: function () {
             // When the video or play button is clicked, play/pause the video.
-            video.addEventListener('click', this.playPause, false);
+//            video.addEventListener('click', this.playPause, false);
             play.addEventListener('click', this.playPause, false);
 
             // When the play button is pressed,
             // switch to the "Pause" symbol.
             video.addEventListener('play', function () {
                 play.title = 'Pause';
-                play.innerHTML = '<span id="pauseButton">&#x2590;&#x2590;</span>';
+                $(play).attr('icon', 'av:pause');
                 videoPlayer.trackPlayProgress();
             }, false);
 
@@ -143,7 +143,7 @@ var percentV = 1;
             // switch to the "Play" symbol.
             video.addEventListener('pause', function () {
                 play.title = 'Play';
-                play.innerHTML = '&#x25BA;';
+                $(play).attr('icon', 'av:play-arrow');
                 videoPlayer.stopTrackingPlayProgress();
             }, false);
 
@@ -179,7 +179,9 @@ var percentV = 1;
 
 
         updatePlayProgress: function () {
-            playProgressBar.style.width = ((video.currentTime / video.duration) * (progressHolder.offsetWidth)) + "px";
+//            playProgressBar.style.width = ((video.currentTime / video.duration) * (progressHolder.offsetWidth)) + "px";
+            console.log(video.duration);    
+            playProgressBar.value = ((video.currentTime / video.duration) * 100);
         },
 
 
@@ -189,7 +191,7 @@ var percentV = 1;
         },
 
 
-        videoScrubbing: function () {
+        /*videoScrubbing: function () {
             progressHolder.addEventListener("mousedown", function () {
                 videoPlayer.stopTrackingPlayProgress();
 
@@ -205,12 +207,11 @@ var percentV = 1;
 
                     console.log("spostato a:", videoPlayer.currentTime, videoPlayer.duration);
 
-                    video.play();
                     videoPlayer.setPlayProgress(e.pageX);
                     videoPlayer.trackPlayProgress();
                 }
             }, true);
-        },
+        },*/
 
         setPlayProgress: function (clickX) {
             var newPercent = Math.max(0, Math.min(1, (clickX - this.findPosX(progressHolder)) / progressHolder.offsetWidth));
@@ -235,21 +236,33 @@ var percentV = 1;
     };
 
     $(document).ready(function () {
-
+        $(document).on('element-selected', function(e){
+            var id = e.detail.selected;
+            $.ajax({
+                url: 'php/get-time.php',
+                method: 'POST',
+                data: {'id':id},
+                success: function(data){
+                    var result = JSON.parse(data);
+                    var player = document.getElementById('player');
+                    var bar = document.getElementById('play_progress');
+                    player.pause();
+                    player.currentTime = result[0].from;
+                    bar.value = ((Number(result[0].from) / video.duration) * 100);
+                }
+            });
+        });
         $.post("php/get-overlays.php",
             {
                 project: 1
             },
             function (data, status) {
-                console.log(data);
                 overlays = JSON.parse(data);
                 if (overlays !== 0) {
-                    console.log(overlays);
                     $.post("php/get-timestamps.php",
                         function (data, status) {
                             timestamps = JSON.parse(data);
                             if(timestamps !== 0){
-                                console.log(timestamps);
                             }
                         });
                 } else {
@@ -411,7 +424,10 @@ function fuck(){
 
 function handleDrop(event, ui){
     var helper = $(ui.helper).clone().removeClass('ui-draggable-dragging');
-    var pj = 0;
+    //TODO: Recuperare gli stili necessari e salvarli nel database o rimuovere solo quelli fastidiosi
+    helper = $(helper).attr('style', '');
+    helper = $(helper).attr('id', '%id');
+    var pj = 1;
     var type = $('<div/>').append($(helper).clone()).html();
     var props = "";
     
@@ -466,6 +482,7 @@ function handleDrop(event, ui){
                     });
                 }
             });
+            //TODO: Inserire un timestamp quando faccio drop o se non lo muovo non ho timestamp
             $('.overlay').append(helper);
         }
     });

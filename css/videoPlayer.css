@@ -54,15 +54,20 @@ body {
 
 #container{
     height: 100%;
-    display: flex;
-    align-items: center;
+    display: -webkit-flex;
+   display: flex;
+   -webkit-flex-direction: column; /* works with row or column */
+   flex-direction: column;
+   -webkit-align-items: center;
+   align-items: center;
+   -webkit-justify-content: center;
+   justify-content: center;
     padding-left: 20pt;
     padding-right: 20pt;
 }
 
 #video_container {
     width: 100%;
-    margin: auto;
     position: relative;
 }
 
@@ -81,19 +86,14 @@ body {
     left: 0;
     top:0;
     overflow: hidden;
-    background-color: blueviolet;
 }
 
 #overlayControls.fs-control{
-    z-index: 2100;
+    z-index: 0;
 }
 
 .hovered{
-    background-color: aqua;
-}
-
-#videoControls {
-    display: none;
+    
 }
 
 .js #videoControls {
@@ -108,6 +108,13 @@ body {
     overflow: hidden;
     padding: 8px 0;
     opacity: 0;
+}
+
+.js #controls{
+    width: 100%;
+    height: 50pt;
+    display: flex;
+    align-items: center;
 }
 
 /* The logo */
@@ -229,11 +236,10 @@ a #video_tutsLogo { border: none; }
 
 .link{
     background-color: transparent;
-    color: white;
 }
 
 .dragging{
-    z-index: 3000;
+    z-index: 1;
 }
 
 .bar{
@@ -287,18 +293,9 @@ a #video_tutsLogo { border: none; }
     padding-bottom: 10pt;
     margin-right: -4pt;
     padding-right: 4pt;
+    overflow: auto;
 }
 
-.card-top {
-	height: -webkit-calc(100% - 25pt);
-	height: -moz-calc(100% - 25pt);
-	height: calc(100% - 25pt);
-}
-
-.card-controls{
-    width:100%;
-    height:25pt;
-}
 
 iron-icon{
     color:white;

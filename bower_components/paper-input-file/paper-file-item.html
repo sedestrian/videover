@@ -1,0 +1,63 @@
+<link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../neon-advanced-animations/unroll-animation.html">
+<link rel="import" href="../neon-advanced-animations/roll-up-animation.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-item/paper-item-body.html">
+<link rel="import" href="../paper-styles/default-theme.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="paper-file-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+        border-box: box-sizing;
+        background: white;
+        overflow: hidden;
+        border-top: solid 1px var(--paper-file-list-divider-color, --divider-color);
+      }
+      span {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    </style>
+    <paper-item id="fileItem" class="flex layout horizontal center">
+      <paper-item-body two-line class="flex">
+        <div>[[name]]</div>
+        <div secondary>[[size]]</div>
+      </paper-item-body>
+      <paper-icon-button icon="icons:clear" on-tap="removeFile"></paper-icon-button>
+    </paper-item>
+  </template>
+  <script>
+    Polymer({
+      is: 'paper-file-item',
+      properties: {
+        animationConfig: {
+          value: function() {
+            return {
+              'entry': {
+                name: 'unroll-animation',
+                node: this
+              },
+              'exit': {
+                name: 'roll-up-animation',
+                node: this
+              }
+            }
+          }
+        },
+      },
+      behaviors: [
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+      removeFile: function() {
+        this.playAnimation('exit');
+      }
+    });
+  </script>
+</dom-module>

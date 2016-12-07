@@ -1,3 +1,7 @@
+<link rel="import" href="../custom_elements/paper-file-input.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
 <dom-module id="property-editor">
 
     <style>
@@ -22,17 +26,132 @@
             font-size: 14pt;
         }
         
+        .prop{
+            --paper-input-container-color: white;
+            --paper-input-container-focus-color: #e8745c;
+            --paper-input-container-input-color: white;
+        }
+        
     </style>
    
     <template style="width:100%; height:100%;">
         <div class="background full">
             <p class="roboto title"><b>PROPRIETA':</b></p>
+            <div class="altfull" style="overflow:auto;">
+                <span class="roboto propsec">Generale:</span>
+                <paper-input class="prop" label="Nome" value="{{nome}}"></paper-input>
+                <template is="dom-if" if="{{_or(button, link, text)}}">
+                    <paper-input class="prop" label="Testo" value="{{testo}}"></paper-input>
+                </template>
+                <template is="dom-if" if="{{_or(button, link, text)}}">
+                    <span class="roboto propsec">Testo:</span>
+                    <paper-input class="prop" type="number" label="Dimensione font" min="0" max="100"></paper-input>
+                    <paper-color-input allow-alpha class="prop" shape="square" type="hsl" label="Colore font"></paper-color-input>
+                    <paper-dropdown-menu class="prop" label="Famiglia font">
+                        <paper-listbox class="dropdown-content">
+                            <paper-item>Roboto</paper-item>
+                            <paper-item>Arial</paper-item>
+                            <paper-item>Common Sans</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                </template>
+                <span class="roboto propsec">Elemento:</span>
+                <paper-file-input class="prop" label="Sfondo"></paper-file-input>
+                <paper-color-input allow-alpha class="prop" shape="square" type="hsl" label="Colore sfondo"></paper-color-input>
+            </div>
         </div>
     </template>
 
     <script>
         Polymer({
-            is: 'property-editor'
+            is: 'property-editor',
+            
+            properties:{
+                nome:{
+                    type:String,
+                    observer: '_nameChanged'
+                },
+                testo:{
+                    type:String,
+                    observer: '_textChanged'
+                }
+            },
+            
+            ready: function(){
+                var app = this;
+                $(document).on('element-selected', function(e){
+                    app._handleSelection(e.detail.selected);
+                });
+            },
+            
+            _or: function(condition, other){
+                if(condition || other){
+                    return true;
+                }
+                return false;
+            },
+            
+            _or: function(condition, other, third){
+                if(condition || other || third){
+                    return true;
+                }
+                return false;
+            },
+            
+            _nameChanged: function(){
+                var app = this;
+                $.ajax({
+                    url: 'php/update-elem.php',
+                    method: 'POST',
+                    data: {'property':'overlay_name', 'value':this.nome, 'id':app.id},
+                    success: function(){
+                        app.fire('element-changed');
+                    }
+                });
+            },
+            
+            _textChanged: function(){
+                var app = this;
+                $.ajax({
+                    url: 'php/update-elem.php',
+                    method: 'POST',
+                    data: {'property': 'overlay_props', 'value':this.testo, 'id':app.id},
+                    success: function(){
+                        app.fire('element-changed');
+                    }
+                });
+            },
+            
+            _handleSelection: function(index){
+                this.id = index;
+                var app = this;
+                $.ajax({
+                    url:"php/get-selected.php",
+                    method: 'POST',
+                    data: {'id':index},
+                    success: function(data){
+                        var result = JSON.parse(data);
+                        var element = result[0];
+                        var elementstr = $(result[0].type);
+                        var tagName = $(elementstr).prop("tagName");
+                        app.nome = element.name;
+                        app.testo = $(elementstr).html();
+                        if( tagName == "PAPER-BUTTON" ){
+                            if($(element).hasClass('link')){
+                                app.link = true;
+                                app.button = false;
+                                app.image = false;
+                                app.text = false;
+                            }else{
+                                app.link = false;
+                                app.button = true;
+                                app.image = false;
+                                app.text = false;
+                            }
+                        }
+                    }
+                });
+            }
         });
     </script>
 

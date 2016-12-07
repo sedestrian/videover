@@ -39,6 +39,15 @@ and to open the dialog
       height:200px;
     }
     
+      .noslide{
+          --paper-input-container-underline:{
+              background-color:transparent;
+          }
+          --paper-input-container-underline-focus:{
+              background-color: transparent;
+          }
+      }
+      
     #container {
       margin-top: 0px;
       padding: 0px;
@@ -213,13 +222,13 @@ and to open the dialog
 
       <div id="details">
         <template is="dom-if" if="{{_showValueSlider(shape, type)}}">
-          <paper-input-container attr-for-value="immediate-value">
+          <paper-input-container class="noslide" attr-for-value="immediate-value">
             <label>Value (Brightness)</label>
             <paper-slider id="valueSlider" class="paper-input-input" min="0" max="100" pin="true" value="100" immediate-value="{{sliderValue}}"></paper-slider>
           </paper-input-container>
         </template>
         <template is="dom-if" if="{{_showLightnessSlider(shape, type)}}">
-          <paper-input-container attr-for-value="immediate-value">
+          <paper-input-container class="noslide" attr-for-value="immediate-value">
             <label>Lightness</label>
             <paper-slider id="lightnessSlider" class="paper-input-input" min="0" max="100" pin="true" value="50" immediate-value="{{sliderLightness}}"></paper-slider>
           </paper-input-container>
@@ -233,7 +242,7 @@ and to open the dialog
         </template>
 
         <template is="dom-if" if="{{_and(allowAlpha,_initialAlphaValueHackApplied)}}">
-          <paper-input-container attr-for-value="immediate-value" hidden$="{{!_or(alwaysShowAlpha, advanced)}}">
+          <paper-input-container class="noslide" attr-for-value="immediate-value" hidden$="{{!_or(alwaysShowAlpha, advanced)}}">
             <label>Alpha (transparency)</label>
             <paper-slider id="alphaPicker" class="paper-input-input" min="0" max="1" step="0.01" value="{{_initialAlphaValueHack}}" immediate-value="{{immediateColor.alpha}}"></paper-slider>
           </paper-input-container>
