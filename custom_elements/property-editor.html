@@ -37,28 +37,58 @@
     <template style="width:100%; height:100%;">
         <div class="background full">
             <p class="roboto title"><b>PROPRIETA':</b></p>
-            <div class="altfull" style="overflow:auto;">
-                <span class="roboto propsec">Generale:</span>
-                <paper-input class="prop" label="Nome" value="{{nome}}"></paper-input>
-                <template is="dom-if" if="{{_or(button, link, text)}}">
-                    <paper-input class="prop" label="Testo" value="{{testo}}"></paper-input>
-                </template>
-                <template is="dom-if" if="{{_or(button, link, text)}}">
-                    <span class="roboto propsec">Testo:</span>
-                    <paper-input class="prop" type="number" label="Dimensione font" min="0" max="100"></paper-input>
-                    <paper-color-input allow-alpha class="prop" shape="square" type="hsl" label="Colore font"></paper-color-input>
-                    <paper-dropdown-menu class="prop" label="Famiglia font">
-                        <paper-listbox class="dropdown-content">
-                            <paper-item>Roboto</paper-item>
-                            <paper-item>Arial</paper-item>
-                            <paper-item>Common Sans</paper-item>
-                        </paper-listbox>
-                    </paper-dropdown-menu>
-                </template>
-                <span class="roboto propsec">Elemento:</span>
-                <paper-file-input class="prop" label="Sfondo"></paper-file-input>
-                <paper-color-input allow-alpha class="prop" shape="square" type="hsl" label="Colore sfondo"></paper-color-input>
-            </div>
+            <template is="dom-if" if="{{selected}}">
+                <div class="altfullright" style="overflow:auto;">
+                    <span class="roboto propsec">Tempo:</span>
+                    <div style="display:flex; align-items:center;">
+                        <paper-input class="prop" style="width:100%; margin-right:8pt;" type="number" label="Da" value="{{from}}" min="0" max="100"></paper-input>
+                        <paper-input class="prop" style="width:100%;" type="number" label="A" value="{{to}}" min="0" max="100"></paper-input>
+                    </div>
+                    <span class="roboto propsec">Posizione:</span>
+                    <div style="display:flex; align-items:center;">
+                        <paper-input class="prop" style="width:100%; margin-right:8pt;" type="number" label="Left" value="{{left}}" min="0" max="1000"></paper-input>
+                        <paper-input class="prop" style="width:100%;" type="number" label="Top" value="{{top}}" min="0" max="1000"></paper-input>
+                    </div>
+                    <span class="roboto propsec">Generale:</span>
+                    <paper-input class="prop" label="Nome" value="{{nome}}"></paper-input>
+                    <template is="dom-if" if="{{_or(button, link, text)}}">
+                        <paper-input class="prop" label="Testo" value="{{testo}}"></paper-input>
+                    </template>
+                    <paper-dropdown-menu class="prop" label="Azione">
+                            <paper-listbox class="dropdown-content">
+                                <paper-item>Collegamento</paper-item>
+                                <paper-item>Azione sul video</paper-item>
+                                <paper-item>Apertura Frame</paper-item>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    <template is="dom-if" if="{{_or(button, link, text)}}">
+                        <span class="roboto propsec">Testo:</span>
+                        <paper-input class="prop" type="number" label="Dimensione font" min="0" max="100"></paper-input>
+                        <paper-color-input allow-alpha class="prop" shape="square" type="hsl" label="Colore font"></paper-color-input>
+                        <paper-dropdown-menu class="prop" label="Famiglia font">
+                            <paper-listbox class="dropdown-content">
+                                <paper-item>Roboto</paper-item>
+                                <paper-item>Arial</paper-item>
+                                <paper-item>Common Sans</paper-item>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </template>
+                    <span class="roboto propsec">Elemento:</span>
+                    <paper-file-input class="prop" label="Sfondo"></paper-file-input>
+                    <paper-color-input allow-alpha class="prop" shape="square" type="hsl" label="Colore sfondo"></paper-color-input>
+                </div>
+                <div>
+                    <paper-button raised class="fullwidth white" on-tap="_handleTimestamp">AGGIORNA</paper-button>
+                </div>
+            </template>
+            <template is="dom-if" if="{{!selected}}">
+                <div class="altfullright" style="overflow:auto;">
+                    <span class="roboto propsec" style="font-size:12pt;">Seleziona un elemento</span>
+                </div>
+                <div>
+                    <paper-button raised disabled class="fullwidth white">AGGIORNA</paper-button>
+                </div>
+            </template>
         </div>
     </template>
 
@@ -71,16 +101,52 @@
                     type:String,
                     observer: '_nameChanged'
                 },
+                selected:{
+                    type:Boolean
+                },
                 testo:{
                     type:String,
                     observer: '_textChanged'
+                },
+                from:{
+                    type:String,
+                    observer: '_timeChanged'
+                },
+                to:{
+                    type:String,
+                    observer: '_timeChanged'
+                },
+                left:{
+                    type:Number,
+                    observer: '_leftChanged'
+                },
+                top:{
+                    type:Number,
+                    observer: '_topChanged'
+                },
+                timestamps:{
+                    type:Array
                 }
             },
             
             ready: function(){
+                this.selected = false;
                 var app = this;
                 $(document).on('element-selected', function(e){
                     app._handleSelection(e.detail.selected);
+                });
+            },
+            
+            _retrieveOverlayTimestamps: function(){
+                var app = this;
+                $.ajax({
+                    url: 'php/get-timestamp.php',
+                    method: 'POST',
+                    data: {'id': app.id},
+                    success: function(data){
+                        var result = JSON.parse(data);
+                        app.timestamps = result;
+                    }
                 });
             },
             
@@ -98,6 +164,40 @@
                 return false;
             },
             
+            _timeChanged: function(){
+                this.timevalid = true;
+                var app = this;
+                var from = Number(app.from);
+                var to = Number(app.to);
+                if(from < to){
+                    if(typeof app.timestamps != 'undefined'){
+                        this.timestamps.forEach(function (elem) {
+                            var elfrom = Number(elem.from);
+                            var elto = Number(elem.to);
+                            if(from >= elfrom && from < elto){
+                                app.timevalid = false;
+                            }else if(to <= elto && to > elfrom){
+                                app.timevalid = false;
+                            }else if(from < elfrom && to >= elto){
+                                app.timevalid = false;
+                            }
+                        });
+                    }else{
+                    }
+                }else{
+                    this.timevalid = false;
+                }
+                console.log(this.timevalid);
+            },
+            
+            _leftChanged: function(newValue, oldValue){
+                
+            },
+            
+            _topChanged: function(newValue, oldValue){
+                
+            },
+            
             _nameChanged: function(){
                 var app = this;
                 $.ajax({
@@ -113,17 +213,31 @@
             _textChanged: function(){
                 var app = this;
                 $.ajax({
-                    url: 'php/update-elem.php',
+                    url: 'php/get-props.php',
                     method: 'POST',
-                    data: {'property': 'overlay_props', 'value':this.testo, 'id':app.id},
+                    data: {'id': app.id},
                     success: function(){
-                        app.fire('element-changed');
+                        $.ajax({
+                            url: 'php/update-elem.php',
+                            method: 'POST',
+                            data: {'property': 'overlay_props', 'value':this.testo, 'id':app.id},
+                            success: function(){
+                                app.fire('element-changed');
+                            }
+                        });
                     }
                 });
             },
             
+            _handleTimestamp: function(e){
+                
+            },
+            
             _handleSelection: function(index){
+                this.selected = true;
+                this.timevalid = true;
                 this.id = index;
+                this._retrieveOverlayTimestamps();
                 var app = this;
                 $.ajax({
                     url:"php/get-selected.php",
@@ -136,6 +250,10 @@
                         var tagName = $(elementstr).prop("tagName");
                         app.nome = element.name;
                         app.testo = $(elementstr).html();
+                        app.from = element.from;
+                        app.to = element.to;
+                        app.left = element.x;
+                        app.top = element.y;
                         if( tagName == "PAPER-BUTTON" ){
                             if($(element).hasClass('link')){
                                 app.link = true;

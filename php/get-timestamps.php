@@ -5,7 +5,7 @@ include_once 'db_connect.php';
 
     $overlay = filter_input(INPUT_POST, 'overlay', FILTER_SANITIZE_STRING);
 
-    $sql = "SELECT timestamps_id, video_time_from, video_time_to, visible, position_x, position_y, overlays_id FROM timestamps ORDER BY overlays_id, video_time_from ASC";
+    $sql = "SELECT timestamps_id, video_time_from, video_time_to, visible, position_x, position_y, overlays_id FROM timestamps WHERE visible = 1 ORDER BY overlays_id, video_time_from ASC";
 
     $result = $mysqli->query($sql);
     $output = array(array());

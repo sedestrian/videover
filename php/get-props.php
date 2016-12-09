@@ -6,7 +6,7 @@ if ($_REQUEST['id']) {
 
     $project = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_STRING);
 
-    $sql = "SELECT video_time_from, video_time_to, overlays.overlays_id FROM timestamps INNER JOIN overlays ON timestamps.overlays_id = overlays.overlays_id WHERE timestamps_id = ".$project;
+    $sql = "SELECT * FROM timestamps WHERE overlays_id = ANY (SELECT overlays_id FROM timestamps WHERE timestamps_id = ".$project.");";
 
     $result = $mysqli->query($sql);
     $output = array(array());
@@ -14,9 +14,12 @@ if ($_REQUEST['id']) {
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            $output[$i]['time_id'] = $row["timestamps_id"];
             $output[$i]['from'] = $row["video_time_from"];
             $output[$i]['to'] = $row["video_time_to"];
-            $output[$i]['ov_id'] = $row["overlays_id"];
+            $output[$i]['visible'] = $row["visible"];
+            $output[$i]['left'] = $row["position_x"];
+            $output[$i]['top'] = $row["position_y"];
             $i++;
         }
         echo json_encode($output);

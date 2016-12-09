@@ -285,17 +285,33 @@ a #video_tutsLogo { border: none; }
     height:100%;
 }
 
+.fullwidth{
+    width: -webkit-calc(100% - 4pt);
+	width: -moz-calc(100% - 4pt);
+	width: calc(100% - 4pt);
+}
+
 .altfull{
     width: auto;
-    height: -webkit-calc(100% - 25px);
-	height: -moz-calc(100% - 25px);
-	height: calc(100% - 25px);
+    height: -webkit-calc(100% - 26px);
+	height: -moz-calc(100% - 26px);
+	height: calc(100% - 26px);
     padding-bottom: 10pt;
     margin-right: -4pt;
     padding-right: 4pt;
     overflow: auto;
 }
 
+.altfullright{
+    width: auto;
+    height: -webkit-calc(100% - 76px);
+	height: -moz-calc(100% - 76px);
+	height: calc(100% - 76px);
+    padding-bottom: 15pt;
+    margin-right: -4pt;
+    padding-right: 4pt;
+    overflow: auto;
+}
 
 iron-icon{
     color:white;
@@ -330,6 +346,10 @@ table{
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.outlined{
+    outline: #e8745c solid thick;
 }
 
 .flex-vert-center{

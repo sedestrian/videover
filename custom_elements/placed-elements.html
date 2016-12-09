@@ -56,7 +56,6 @@
                 var app = this;
                 this._retrieveData();
                 $(document).on('element-changed', function(){
-                    console.log("here");
                     app._retrieveData();
                 });
             },
@@ -70,7 +69,6 @@
                     data: {'project':project},
                     success: function(data){
                         var result = JSON.parse(data);
-                        console.log(result);
                         app.overlays = result;
                     }
                 });

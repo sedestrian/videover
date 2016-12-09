@@ -81,7 +81,7 @@
         <paper-card class="card" on-tap="select">
             <div class="el-name"><span class="elem-name-text roboto">{{name}}</span></div>
             <div id="cont" class="flex-center card-top">
-                <content></content>
+                <content id="elem"></content>
             </div>
             <div class="card-controls">
                 <iron-icon icon="delete" class="left red" on-tap="delete"></iron-icon>
@@ -110,6 +110,10 @@
                 },
                 to:{
                     type:String
+                },
+                props:{
+                    type:String,
+                    observer: '_propsChanged'
                 }
             },
             
@@ -119,15 +123,65 @@
             
             _htmlChanged: function(){
                 this.$.cont.innerHTML = this.html;
+                /*var splitted = this.props.split('|');
+                var distributed = this.$.cont.children[0];
+                for(var f = 0; f < splitted.length; f++){
+                    var pair = splitted[f].split(':');
+                    if(pair[0].charAt(0) == "!"){
+                        $(distributed).css(pair[0].substr(1), pair[1]);
+                    }else if(pair[0] == "innerHtml"){
+                        $(distributed).html(pair[1]);
+                    }else {
+                        $(distributed).attr(pair[0], pair[1]);
+                    }
+                }*/
+            },
+            
+            _propsChanged: function(){
+                /*var distributed = this.$.cont.children[0];
+                if(typeof distributed != 'undefined'){
+                    var splitted = this.props.split('|');
+                    for(var f = 0; f < splitted.length; f++){
+                        var pair = splitted[f].split(':');
+                        if(pair[0].charAt(0) == "!"){
+                            $(distributed).css(pair[0].substr(1), pair[1]);
+                        }else if(pair[0] == "innerHtml"){
+                            $(distributed).html(pair[1]);
+                        }else {
+                            $(distributed).attr(pair[0], pair[1]);
+                        }
+                    }
+                }*/
             },
             
             ready: function(){
                 this.$.cont.innerHTML = this.html;
+                /*var splitted = this.props.split('|');
+                var distributed = this.$.cont.children[0];
+                for(var f = 0; f < splitted.length; f++){
+                    var pair = splitted[f].split(':');
+                    if(pair[0].charAt(0) == "!"){
+                        $(distributed).css(pair[0].substr(1), pair[1]);
+                    }else if(pair[0] == "innerHtml"){
+                        $(distributed).html(pair[1]);
+                    }else {
+                        $(distributed).attr(pair[0], pair[1]);
+                    }
+                }*/
             },
             
             delete: function(e){
+                var app = this;
                 e.preventDefault();
                 e.stopPropagation();
+                $.ajax({
+                    url: 'php/delete-timestamp.php',
+                    method: 'POST',
+                    data: {'id': app.element},
+                    success: function(data){
+                        document.querySelector('placed-elements')._retrieveData();
+                    }
+                });
             },
             
             _setup: function(from, to){

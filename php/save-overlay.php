@@ -6,7 +6,7 @@
     	$type = $_POST['type'];
 		$props = filter_input(INPUT_POST, 'props', FILTER_SANITIZE_STRING);
 
-		$sql = "INSERT INTO overlays (project_id, overlay_type, overlay_props) VALUES (".$project.", '".$type."', '".$props."')";
+		$sql = "INSERT INTO overlays (project_id, overlay_type) VALUES (".$project.", '".$type."')";
 
 		if ($mysqli->query($sql) === TRUE) {
     		$nid = $mysqli->insert_id;

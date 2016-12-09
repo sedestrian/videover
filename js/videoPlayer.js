@@ -1,5 +1,7 @@
 var overlayWidth = $('.overlay').width();
 var overlayHeight = $('.overlay').height();
+var outlined;
+var out_id;
 var percentH = 1;
 var percentV = 1;
 
@@ -249,6 +251,11 @@ var percentV = 1;
                     player.pause();
                     player.currentTime = result[0].from;
                     bar.value = ((Number(result[0].from) / video.duration) * 100);
+                    if(typeof window.out_id != 'undefined'){
+                        $('#'+window.out_id).removeClass('outlined');
+                    }
+                    $('#t' + result[0].ov_id).addClass('outlined');
+                    window.out_id = 't' + result[0].ov_id;
                 }
             });
         });
@@ -287,7 +294,7 @@ var percentV = 1;
                 }
             }
             if(!mustshow){
-                $('#overlayControls').find('#'+overlays[i].id).remove();
+                $('#overlayControls').find('#t'+overlays[i].id).remove();
                 for(var z = 0; z < timestamps.length; z++){
                     if(Number(timestamps[z].overlays) == Number(overlays[i].id)){
                         if(findIndex(handled, timestamps[z].id) != -1) {
@@ -300,30 +307,43 @@ var percentV = 1;
             if(typeof newone !== 'undefined' && mustshow) {
                 var bool = find(handled, newone.id);
                 if (handled.length <= 0 || !bool) {
-                    // console.log($('#overlayControls').find('#'+overlays[i]['id']).length);
-                    if ($('#overlayControls').find('#' + overlays[i].id).length === 0) {
-                        var toAppend = overlays[i].type.replace("%id", overlays[i].id);
+                    if ($('#overlayControls').find('#t' + overlays[i].id).length === 0) {
+                        var toAppend = overlays[i].type.replace("%id", "t"+overlays[i].id);
                         $('#overlayControls').append(toAppend);
-                        var appended = $('#'+overlays[i].id);
+                        var appended = $('#t'+overlays[i].id);
                         appended.css('position', 'absolute');
                         appended.css('top', newone.y+"px");
                         appended.css('left', newone.x+"px");
-                        var splitted = overlays[i].props.split('|');
+                        if("t"+overlays[i].id == window.out_id){
+                            $(appended).addClass('outlined');
+                        }
+                        $(appended).draggable({
+                            containment: "parent"
+                        });
+                        $(appended).resizable({
+                            containment: "parent",
+                            handles: "all"
+                        });
+                        /*var splitted = overlays[i].props.split('|');
+                        console.log(splitted);
                         for(var f = 0; f < splitted.length; f++){
                             var pair = splitted[f].split(':');
                             if(pair[0].charAt(0) == "!"){
-                                appended.css(pair[0].substr(1), pair[1]);
+                                $(appended).css(pair[0].substr(1), pair[1]);
                             }else if(pair[0] == "innerHtml"){
-                                appended.html(pair[1]);
+                                $(appended).html(pair[1]);
                             }else {
-                                appended.attr(pair[0], pair[1]);
+                                $(appended).attr(pair[0], pair[1]);
                             }
-                        }
+                        }*/
                         handled.push(newone.id);
                     } else {
-                        console.log("changing "+newone.id);
-                        $('#' + overlays[i].id).css('top', newone.y + "px");
-                        $('#' + overlays[i].id).css('left', newone.x + "px");
+                        $('#t' + overlays[i].id).animate({
+                            top: newone.y,
+                            left: newone.x
+                        }, 1000, function(){});
+                        /*$('#' + overlays[i].id).css('top', newone.y + "px");
+                        $('#' + overlays[i].id).css('left', newone.x + "px");*/
                         for(var m = 0; m < timestamps.length; m++){
                             if(Number(timestamps[m].overlays) == Number(overlays[i].id)){
                                 if(findIndex(handled, timestamps[m].id) != -1) {
@@ -442,6 +462,7 @@ function handleDrop(event, ui){
         method: "POST",
         data: {'project': pj, 'type': type, 'props': props},
         success: function(data){
+            document.querySelector('placed-elements')._retrieveData();
             var id = Number(data);
             var newleft = eui.position.left - $('.overlay').offset().left;
             var newtop = eui.position.top - $('.overlay').offset().top;
@@ -457,10 +478,8 @@ function handleDrop(event, ui){
                         top: 0
                     }); 
                 },
+                //TODO: Modificare il metodo di salvataggio dei timestamp, passare a bottone;
                 stop: function(event, ui){
-
-                    //TODO: capire come recuperare il valore di to;
-                    //TODO: passare il valore del nuovo overlay al timestamp;
 
                     var mui = ui;
 
@@ -475,92 +494,17 @@ function handleDrop(event, ui){
                     $.ajax({
                         url: "php/save-timestamp.php",
                         method: "POST",
-                        data: {'left': mui.position.left, 'top': mui.position.top, 'timefrom': Number($('#player').prop('currentTime')), 'timeto': Number(to), 'visible': 0, 'overlay': $(helper).data("id")},
+                        data: {'left': mui.position.left, 'top': mui.position.top, 'timefrom': Number($('#player').prop('currentTime')), 'timeto': Number(to), 'visible': 1, 'overlay': $(helper).data("id")},
                         success: function(data){
                             console.log(data);
                         }
                     });
                 }
             });
-            //TODO: Inserire un timestamp quando faccio drop o se non lo muovo non ho timestamp
             $('.overlay').append(helper);
         }
     });
 }
-
-/*$('.overlay').bind('drop', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    var width = Math.floor($('#overlayControls').width() / 2);
-    var height = Math.floor($('#overlayControls').height() / 2);
-    
-    var item = $(e.originalEvent.dataTransfer.getData('Text')).clone();
-    
-    var is = this;
-    
-    var pj = 0;
-    var type = "<paper-button raised>button</paper-button>";
-    var props = "";
-    
-    console.log("here");
-    
-    $.ajax({
-        url: "php/save-overlay.php",
-        method: "POST",
-        data: {'project': pj, 'type': type, 'props': props},
-        success: function(data){
-            console.log(data);
-            var id = Number(data);
-            
-            item.css("position", "absolute");
-            item.css("left", width);
-            item.css("top", height);
-            item.css("width", "auto");
-            item.css("height", "auto")
-            item.attr("draggable", false);
-            item.data("id", id);
-            item.draggable({
-                containment: "parent",
-                start: function(event, ui) {
-                    console.log(is.clientWidth);
-                    $(this).draggable("option", "cursorAt", {
-                        left: 0,
-                        top: 0
-                    }); 
-                },
-                stop: function(event, ui){
-
-                    //TODO: capire come recuperare il valore di to;
-                    //TODO: passare il valore del nuovo overlay al timestamp;
-
-                    var mui = ui;
-                    
-                    var to = $('#player').prop('currentTime') + 10;
-                    
-                    console.log(mui.position.left);
-                    console.log(mui.position.top);
-                    console.log($('#player').prop('currentTime'));
-                    console.log(to);
-                    console.log(item.data("id"));
-                    
-                    $.ajax({
-                        url: "php/save-timestamp.php",
-                        method: "POST",
-                        data: {'left': mui.position.left, 'top': mui.position.top, 'timefrom': Number($('#player').prop('currentTime')), 'timeto': Number(to), 'visible': 0, 'overlay': item.data("id")},
-                        success: function(data){
-                            console.log(data);
-                        }
-                    });
-                }
-            });
-
-            $(is).append(item);
-
-            return false;
-        }
-    });
-}).bind('dragover', false);*/
 
 $('#getpos').on('click', function () {
     openNav();
