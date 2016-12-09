@@ -311,9 +311,18 @@ var percentV = 1;
                         var toAppend = overlays[i].type.replace("%id", "t"+overlays[i].id);
                         $('#overlayControls').append(toAppend);
                         var appended = $('#t'+overlays[i].id);
-                        appended.css('position', 'absolute');
-                        appended.css('top', newone.y+"px");
-                        appended.css('left', newone.x+"px");
+                        $(appended).css('position', 'absolute');
+                        $(appended).css('top', newone.y+"px");
+                        $(appended).css('left', newone.x+"px");
+                        if(newone.width !== 0){
+                            $(appended).css('width', newone.width+"px");
+                        }
+                        if(newone.height !== 0){
+                            $(appended).css('height', newone.height+"px");
+                        }
+                        if(newone.text !== null && newone.text !== ""){
+                            $(appended).html = newone.text;
+                        }
                         if("t"+overlays[i].id == window.out_id){
                             $(appended).addClass('outlined');
                         }
@@ -324,18 +333,6 @@ var percentV = 1;
                             containment: "parent",
                             handles: "all"
                         });
-                        /*var splitted = overlays[i].props.split('|');
-                        console.log(splitted);
-                        for(var f = 0; f < splitted.length; f++){
-                            var pair = splitted[f].split(':');
-                            if(pair[0].charAt(0) == "!"){
-                                $(appended).css(pair[0].substr(1), pair[1]);
-                            }else if(pair[0] == "innerHtml"){
-                                $(appended).html(pair[1]);
-                            }else {
-                                $(appended).attr(pair[0], pair[1]);
-                            }
-                        }*/
                         handled.push(newone.id);
                     } else {
                         $('#t' + overlays[i].id).animate({
