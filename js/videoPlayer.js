@@ -314,14 +314,14 @@ var percentV = 1;
                         $(appended).css('position', 'absolute');
                         $(appended).css('top', newone.y+"px");
                         $(appended).css('left', newone.x+"px");
-                        if(newone.width !== 0){
+                        if(newone.width != 0){
                             $(appended).css('width', newone.width+"px");
                         }
-                        if(newone.height !== 0){
+                        if(newone.height != 0){
                             $(appended).css('height', newone.height+"px");
                         }
                         if(newone.text !== null && newone.text !== ""){
-                            $(appended).html = newone.text;
+                            $(appended).html(newone.text);
                         }
                         if("t"+overlays[i].id == window.out_id){
                             $(appended).addClass('outlined');
@@ -339,6 +339,9 @@ var percentV = 1;
                             top: newone.y,
                             left: newone.x
                         }, 1000, function(){});
+                        if(newone.text !== null && newone.text !== ""){
+                            $('#t' + overlays[i].id).html(newone.text);
+                        }
                         /*$('#' + overlays[i].id).css('top', newone.y + "px");
                         $('#' + overlays[i].id).css('left', newone.x + "px");*/
                         for(var m = 0; m < timestamps.length; m++){

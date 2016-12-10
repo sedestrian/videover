@@ -114,6 +114,36 @@
                 props:{
                     type:String,
                     observer: '_propsChanged'
+                },
+                mwidth:{
+                    type:Number
+                },
+                mheight:{
+                    type:Number
+                },
+                fontSize:{
+                    type:Number
+                },
+                fontColor:{
+                    type:String
+                },
+                fontFamily:{
+                    type:String
+                },
+                fontStyle:{
+                    type:Number
+                },
+                background:{
+                    type:String
+                },
+                backgroundColor:{
+                    type:String
+                },
+                melevation:{
+                    type:Number
+                },
+                mtext:{
+                    type:String
                 }
             },
             
@@ -123,52 +153,94 @@
             
             _htmlChanged: function(){
                 this.$.cont.innerHTML = this.html;
-                
-                /*var splitted = this.props.split('|');
                 var distributed = this.$.cont.children[0];
-                for(var f = 0; f < splitted.length; f++){
-                    var pair = splitted[f].split(':');
-                    if(pair[0].charAt(0) == "!"){
-                        $(distributed).css(pair[0].substr(1), pair[1]);
-                    }else if(pair[0] == "innerHtml"){
-                        $(distributed).html(pair[1]);
-                    }else {
-                        $(distributed).attr(pair[0], pair[1]);
-                    }
+                if(this.mwidth != 0)
+                    $(distributed).css('width', this.mwidth);
+                if(this.mheight != 0){
+                    $(distributed).css('height', this.mheight);
+                }
+                if(this.fontSize != 0){
+                    $(distributed).css('font-size', this.fontSize);
+                }
+                if(this.fontColor != ''){
+                    $(distributed).css('color', this.fontColor);
+                }
+                /*if(this.fontFamily != ''){
+                    $(distributed).css('font-family', this.fontFamily);
                 }*/
+                if(this.background != ''){
+                    $(distributed).css('background', this.background);
+                }
+                if(this.backgroundColor != ''){
+                    $(distributed).css('background-color', this.backgroundColor);
+                }
+                /*if(this.melevation != 0){
+                    $(distributed).attr('elevation', this.melevation);
+                }*/
+                if(this.mtext != ''){
+                    $(distributed).html(this.mtext);
+                }
             },
             
             _propsChanged: function(){
-                /*var distributed = this.$.cont.children[0];
-                if(typeof distributed != 'undefined'){
-                    var splitted = this.props.split('|');
-                    for(var f = 0; f < splitted.length; f++){
-                        var pair = splitted[f].split(':');
-                        if(pair[0].charAt(0) == "!"){
-                            $(distributed).css(pair[0].substr(1), pair[1]);
-                        }else if(pair[0] == "innerHtml"){
-                            $(distributed).html(pair[1]);
-                        }else {
-                            $(distributed).attr(pair[0], pair[1]);
-                        }
-                    }
+                var distributed = this.$.cont.children[0];
+                if(this.mwidth != 0)
+                    $(distributed).css('width', this.mwidth);
+                if(this.mheight != 0){
+                    $(distributed).css('height', this.mheight);
+                }
+                if(this.fontSize != 0){
+                    $(distributed).css('font-size', this.fontSize);
+                }
+                if(this.fontColor != ''){
+                    $(distributed).css('color', this.fontColor);
+                }
+                /*if(this.fontFamily != ''){
+                    $(distributed).css('font-family', this.fontFamily);
                 }*/
+                if(this.background != ''){
+                    $(distributed).css('background', this.background);
+                }
+                if(this.backgroundColor != ''){
+                    $(distributed).css('background-color', this.backgroundColor);
+                }
+                /*if(this.melevation != 0){
+                    $(distributed).attr('elevation', this.melevation);
+                }*/
+                if(this.mtext != ''){
+                    $(distributed).html(this.mtext);
+                }
             },
             
             ready: function(){
                 this.$.cont.innerHTML = this.html;
-                /*var splitted = this.props.split('|');
                 var distributed = this.$.cont.children[0];
-                for(var f = 0; f < splitted.length; f++){
-                    var pair = splitted[f].split(':');
-                    if(pair[0].charAt(0) == "!"){
-                        $(distributed).css(pair[0].substr(1), pair[1]);
-                    }else if(pair[0] == "innerHtml"){
-                        $(distributed).html(pair[1]);
-                    }else {
-                        $(distributed).attr(pair[0], pair[1]);
-                    }
+                if(this.mwidth != 0)
+                    $(distributed).css('width', this.mwidth);
+                if(this.mheight != 0){
+                    $(distributed).css('height', this.mheight);
+                }
+                if(this.fontSize != 0){
+                    $(distributed).css('font-size', this.fontSize);
+                }
+                if(this.fontColor != ''){
+                    $(distributed).css('color', this.fontColor);
+                }
+                /*if(this.fontFamily != ''){
+                    $(distributed).css('font-family', this.fontFamily);
                 }*/
+                if(this.background != ''){
+                    $(distributed).css('background', this.background);
+                }
+                if(this.backgroundColor != ''){
+                    $(distributed).css('background-color', this.backgroundColor);
+                }
+                /*if(this.melevation != 0){
+                    $(distributed).attr('elevation', this.melevation);
+                }*/
+                if(this.mtext != ''){
+                    $(distributed).html(this.mtext);
+                }
             },
             
             delete: function(e){

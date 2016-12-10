@@ -49,11 +49,17 @@
                         <paper-input class="prop" style="width:100%; margin-right:8pt;" type="number" label="Left" value="{{left}}" min="0" max="1000"></paper-input>
                         <paper-input class="prop" style="width:100%;" type="number" label="Top" value="{{top}}" min="0" max="1000"></paper-input>
                     </div>
+                    <span class="roboto propsec">Dimensione:</span>
+                    <div style="display:flex; align-items:center;">
+                        <paper-input class="prop" style="width:100%; margin-right:8pt;" type="number" label="Larghezza" value="{{width}}" min="0" max="600"></paper-input>
+                        <paper-input class="prop" style="width:100%;" type="number" label="Altezza" value="{{height}}" min="0" max="600"></paper-input>
+                    </div>
                     <span class="roboto propsec">Generale:</span>
                     <paper-input class="prop" label="Nome" value="{{nome}}"></paper-input>
                     <template is="dom-if" if="{{_or(button, link, text)}}">
                         <paper-input class="prop" label="Testo" value="{{testo}}"></paper-input>
                     </template>
+                    <paper-input class="prop" type="number" label="Elevazione" min="0" max="4"></paper-input>
                     <paper-dropdown-menu class="prop" label="Azione">
                             <paper-listbox class="dropdown-content">
                                 <paper-item>Collegamento</paper-item>

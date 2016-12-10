@@ -42,7 +42,7 @@
             <p class="roboto title"><b>ELEMENTI INSERITI:</b></p>
             <div class="altfull">
                 <template is="dom-repeat" items="{{overlays}}">
-                    <element-holder element="{{item.tid}}" html="{{item.type}}" name="{{item.name}}" from="{{item.from}}" to="{{item.to}}"></element-holder>
+                    <element-holder element="{{item.tid}}" html="{{item.type}}" name="{{item.name}}" from="{{item.from}}" to="{{item.to}}" mwidth="{{item.width}}" mheight="{{item.height}}" font-size="{{item.font_size}}" font-color="{{item.font_color}}" font-family="{{item.font_family}}" font-style="{{item.font_style}}" background="{{item.background}}" background-color="{{item.background_color}}" melevation="{{elevation}}" mtext="{{item.text}}"></element-holder>
                 </template>
             </div>
         </div>
